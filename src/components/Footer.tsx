@@ -5,7 +5,7 @@ import React from "react";
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
   const GITHUB_URL = "https://github.com/Lethe10137/equal_temper";
-  const LICENSE_URL = GITHUB_URL + "/blob/main/LICENSE";
+  const LICENSE_URL = GITHUB_URL + "/blob/master/LICENSE";
 
   // 极简内联样式（您可以改为 CSS Modules）
   const footerStyle: React.CSSProperties = {

@@ -129,13 +129,13 @@ export default function NotesPad({ marks: ori_marks }: NotesPadProps) {
         {notes.map((x, i) => (
           <Note
             key={"note" + i}
-            rotation={(i + count - 3) * 30}
+            rotation={(i + count - 3) * 30 - 90}
             content={notes_name[x]}
             freq={get_freq(x, freqs[0])}
           />
         ))}
         {marks.map((x, i) => (
-          <Mark key={"mark" + i} rotation={i * 30} content={x.label} />
+          <Mark key={"mark" + i} rotation={i * 30 - 90} content={x.label} />
         ))}{" "}
       </div>
       <div className="card">

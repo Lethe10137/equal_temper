@@ -1,0 +1,15 @@
+.radio-form {
+    margin-top: 10vh;
+    text-align: left; /* 左对齐整体内容 */
+}
+
+.radio-form label {
+    display: block; /* 垂直排列 */
+    font-size: 3em; /* 字号 3em */
+    margin-bottom: 0.5em; /* 每项间距 */
+    cursor: pointer; /* 鼠标悬停显示手型 */
+}
+
+.radio-form input[type="radio"] {
+    margin-right: 0.5em; /* 单选框与文字间距 */
+}

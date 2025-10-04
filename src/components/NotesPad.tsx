@@ -1,6 +1,9 @@
 import { useAudio } from "../hooks/useAudio";
 import { useState } from "react";
 import type { NoteItem } from "../types";
+
+import BinarySelector from "../components/Selector";
+
 type NoteProps = {
   rotation: number;
   content: string;
@@ -25,7 +28,14 @@ function Note({ rotation, content, freq }: NoteProps) {
       }}
       className="center-text"
     >
-      {content}
+      <span
+        style={{
+          transform: `rotate(${-rotation}deg)`,
+          transition: "transform 0.3s ease",
+        }}
+      >
+        {content}
+      </span>
     </h1>
   );
 }
@@ -40,17 +50,25 @@ function Mark({ rotation, content }: MarkProps) {
     <h2
       style={{
         position: "absolute",
-        top: `${Math.sin((rotation / 180) * Math.PI) * 22 + 30}vh`,
-        left: `${Math.cos((rotation / 180) * Math.PI) * 22 + 35}vh`,
+        top: "54vh",
+        left: "35vh",
         width: "10vh",
         height: "10vh",
-        color: "black",
-        fontSize: "2.5em",
-        // outline: "1px solid yellow",
+        transform: `rotate(${rotation}deg)`,
+        transformOrigin: "5vh -18vh", // rotate around the parent’s center
+        transition: "transform 0.3s ease",
+        outlineColor: "red",
       }}
       className="center-text"
     >
-      {content}
+      <span
+        style={{
+          transform: `rotate(${-rotation}deg)`,
+          transition: "transform 0.3s ease",
+        }}
+      >
+        {content}
+      </span>
     </h2>
   );
 }
@@ -75,7 +93,7 @@ type NotesPadProps = {
 };
 
 const get_freq = (offset: number, min: number) => {
-  let freq = 442 * Math.pow(2, offset / 12 + 0.25);
+  let freq = 221 * Math.pow(2, offset / 12 + 0.25);
 
   // console.log(notes_name[offset], offset, freq);
 
@@ -89,8 +107,9 @@ const get_freq = (offset: number, min: number) => {
 };
 
 export default function NotesPad({ marks: ori_marks }: NotesPadProps) {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(6);
   const [five, setFive] = useState(false);
+  const [fromDo, setFromDo] = useState(false);
   const audio = useAudio();
 
   const notes = Array.from({ length: 12 }, (_, i) => {
@@ -104,19 +123,28 @@ export default function NotesPad({ marks: ori_marks }: NotesPadProps) {
     x,
     notes[(12 - (count % 12) + i) % 12],
   ]);
-  const freqs = k
+  let semi = k
     .filter((x) => x[0].id >= 0)
     .sort((a, b) => a[0].id - b[0].id)
-    .map((x) => 442 * Math.pow(2, x[1] / 12 + 0.25));
+    .map((x) => ((x[1] % 12) + 18) % 12);
+
+  if (!fromDo) {
+    semi = semi.sort((a, b) => a - b);
+  }
+
+  // console.log(semi);
+  const freqs = semi.map((x) => Math.pow(2, 0.25 + x / 12) * 221);
 
   for (let i = 1; i < freqs.length; i++) {
     if (freqs[i] < freqs[i - 1]) {
       freqs[i] *= 2;
     }
   }
+
   if (freqs.length == 7) {
     freqs.push(freqs[0] * 2);
   }
+  // console.log(freqs);
 
   return (
     <>
@@ -129,24 +157,46 @@ export default function NotesPad({ marks: ori_marks }: NotesPadProps) {
         {notes.map((x, i) => (
           <Note
             key={"note" + i}
-            rotation={(i + count - 3) * 30 - 90}
+            rotation={
+              (i - 3) * 30 -
+              90 +
+              30 * count * (fromDo ? 1 : 0) -
+              (fromDo ? 180 : 0)
+            }
             content={notes_name[x]}
             freq={get_freq(x, freqs[0])}
           />
         ))}
         {marks.map((x, i) => (
-          <Mark key={"mark" + i} rotation={i * 30 - 90} content={x.label} />
-        ))}{" "}
+          <Mark
+            key={"mark" + i}
+            rotation={
+              i * 30 - 30 * count * (fromDo ? 0 : 1) - (fromDo ? 180 : 0)
+            }
+            content={x.label}
+          />
+        ))}
       </div>
       <div className="card">
-        <button
-          onClick={() => {
-            setFive(!five);
-            setCount(count % 2 == 0 ? count : (6 + count) % 12);
+        {/*{count}*/} Layout:
+        <BinarySelector
+          trueLabel="Fifths"
+          falseLabel="Chromatic"
+          onSelectionChange={(f) => {
+            if (count % 2 != 0 && f !== five) {
+              setCount(count + (count > 0 ? -6 : 6));
+            }
+            setFive(f);
           }}
-        >
-          Toggle mode
-        </button>
+        />
+      </div>
+      <div className="card">
+        Solmization:
+        <BinarySelector
+          trueLabel="Relative"
+          falseLabel="Absolute"
+          onSelectionChange={setFromDo}
+        />
       </div>
 
       <div className="card">

@@ -25,6 +25,8 @@ export const AudioProvider: React.FC<AudioProviderProps> = ({ children }) => {
   const sound = async (duration: number, freqList: number[]) => {
     if (!audioCtxRef.current) return;
 
+    console.log(freqList);
+
     // 停止所有正在播放的振荡器
     currentOscillatorsRef.current.forEach((osc) => {
       try {

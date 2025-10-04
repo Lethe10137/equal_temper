@@ -1,0 +1,43 @@
+.selectorContainer {
+    display: flex;
+    border: 1px solid #ccc; /* 外层边框 */
+    border-radius: 8px;
+    overflow: hidden; /* 确保子元素边框融合 */
+}
+
+/* 按钮基础样式 */
+.optionButton {
+    flex: 1; /* 确保两个按钮平分宽度 */
+    padding: 0.6em 1em;
+    cursor: pointer;
+    background-color: #fff;
+    color: #333;
+    border: none; /* 移除子元素自己的边框 */
+    transition: all 0.2s ease;
+    font-size: 0.9em;
+}
+
+/* 按钮的悬停效果 */
+.optionButton:hover:not(.active) {
+    background-color: #fff;
+}
+
+/* 选中（活跃）状态的样式 */
+.active {
+    background-color: #1a1a1a; /* 蓝色背景 */
+    color: white; /* 白色文字 */
+    /*font-weight: 800;*/
+    z-index: 10; /* 确保活跃的按钮在视觉上稍微突出 */
+}
+
+@media (prefers-color-scheme: light) {
+    .active {
+        background-color: #f9f9f9;
+        color: black;
+    }
+}
+
+/* 两个按钮中间的分隔线（通过第一个按钮的右边框实现） */
+.optionButton:first-child {
+    border-right: 1px solid #ccc;
+}

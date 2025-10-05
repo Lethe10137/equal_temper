@@ -16,8 +16,8 @@
     gap: 30px;
     justify-content: center; /* 主轴(水平)居中 */
     align-items: center;
-    padding: 20px;
-    font-size: 2em;
+    padding: 1.5%;
+    font-size: min(3cqw, 2cqh);
 }
 
 .square {
@@ -28,4 +28,19 @@
     display: flex;
     justify-content: center; /* 水平居中 */
     align-items: center; /* 垂直居中 */
+}
+
+.main {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.main-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+    flex-direction: row;
 }

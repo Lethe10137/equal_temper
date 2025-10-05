@@ -17,25 +17,31 @@ function Note({ rotation, content, freq }: NoteProps) {
       onClick={() => sound(0.3, [freq])}
       style={{
         position: "absolute",
-        top: "60vh",
-        left: "35vh",
-        width: "10vh",
-        height: "10vh",
-        background: "skyblue",
+        top: "80cqw",
+        left: "45cqw",
+        width: "10cqw",
+        height: "10cqw",
+        background: "deepskyblue",
         transform: `rotate(${rotation}deg)`,
-        transformOrigin: "5vh -25vh", // rotate around the parent’s center
+        transformOrigin: "5cqw -35cqw", // rotate around the parent’s center
         transition: "transform 0.3s ease",
       }}
-      className="center-text"
+      className="center-t%t"
     >
-      <span
+      <div
         style={{
           transform: `rotate(${-rotation}deg)`,
+          transformOrigin: "center center",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100%",
+          width: "100%",
           transition: "transform 0.3s ease",
         }}
       >
         {content}
-      </span>
+      </div>
     </h1>
   );
 }
@@ -50,25 +56,31 @@ function Mark({ rotation, content }: MarkProps) {
     <h2
       style={{
         position: "absolute",
-        top: "54vh",
-        left: "35vh",
-        width: "10vh",
-        height: "10vh",
+        top: "73cqw",
+        left: "45cqw",
+        width: "10cqw",
+        height: "10cqw",
         transform: `rotate(${rotation}deg)`,
-        transformOrigin: "5vh -18vh", // rotate around the parent’s center
+        transformOrigin: "5cqw -27cqw", // rotate around the parent’s center
         transition: "transform 0.3s ease",
-        outlineColor: "red",
+        // outline: "1px solid red",
       }}
-      className="center-text"
+      className="center-t%t"
     >
-      <span
+      <div
         style={{
           transform: `rotate(${-rotation}deg)`,
+          transformOrigin: "center center",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          height: "100%",
+          width: "100%",
           transition: "transform 0.3s ease",
         }}
       >
         {content}
-      </span>
+      </div>
     </h2>
   );
 }
@@ -147,11 +159,22 @@ export default function NotesPad({ marks: ori_marks }: NotesPadProps) {
   // console.log(freqs);
 
   return (
-    <>
+    <div
+      style={{
+        width: "60vh",
+        maxWidth: "90vw",
+        aspectRatio: "3/4",
+        transform: "scale(1)",
+        outline: "1px solid blue",
+        marginBottom: "3vh",
+      }}
+    >
       <div
         style={{
-          width: "80vh",
-          height: "80vh",
+          width: "100%",
+          height: "75%",
+          outline: "1px solid blue",
+          containerType: "size",
         }}
       >
         {notes.map((x, i) => (
@@ -204,6 +227,6 @@ export default function NotesPad({ marks: ori_marks }: NotesPadProps) {
         <button onClick={() => audio.sound(0.3, freqs)}> Play</button>
         <button onClick={() => setCount((count) => count - 1)}>+</button>
       </div>
-    </>
+    </div>
   );
 }
